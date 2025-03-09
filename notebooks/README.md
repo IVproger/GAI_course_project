@@ -1,5 +1,3 @@
-Here's a well-structured and visually appealing `README.md` for your `notebooks/` directory:  
-
 ---
 
 # 📓 Project Notebooks  
