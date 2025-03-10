@@ -100,12 +100,11 @@ Corgi dog from DreamBooth ref dataset) to capture the unique subject characteris
 ### Source image:
    ![Source image](./images/00.jpg)
 
+---
 
 ### Tuning Output Samples
 
 The images below are sample outputs obtained after tuning:
-
----
 
 ### Target_generated_image
  **Prompt:**  
