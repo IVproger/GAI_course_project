@@ -100,8 +100,6 @@ Corgi dog from DreamBooth ref dataset) to capture the unique subject characteris
 ### Source image:
    ![Source image](./images/00.jpg)
 
----
-
 ### Tuning Output Samples
 
 The images below are sample outputs obtained after tuning:
@@ -126,7 +124,6 @@ The images below are sample outputs obtained after tuning:
 "'a xon dog in cool sunglasses sitting in the sport car, smillings and have good time"  
 ![Tuning Output 3](./images/styled_generated_image_2.png)
 
----
 
 ## References
 
