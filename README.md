@@ -97,12 +97,9 @@ For further experiments and analysis, refer to the Jupyter Notebook in the `note
 This stage represents the initial proof-of-concept where the DreamBooth fine-tuning process was applied. In this phase, the model was fine-tuned on the provided reference images (
 Corgi dog from DreamBooth ref dataset) to capture the unique subject characteristics, resulting in early experimental outputs.
 
----
-
-#### Source image:
+### Source image:
    ![Source image](./images/00.jpg)
 
----
 
 ### Tuning Output Samples
 
@@ -110,28 +107,22 @@ The images below are sample outputs obtained after tuning:
 
 ---
 
-#### Sample 0
+### Target_generated_image
  **Prompt:**  
  "a xon dog"  
  ![Tuning Output 1](./images/target_generated_image_0.png)
 
----
-
-#### Sample 1
+### Styled_generated_image №1
 **Prompt:**  
 "a xon dog in beautifyl landscape with river, forest and mountines"  
 ![Tuning Output 2](./images/styled_generated_image_0.png)
 
----
-
-#### Sample 2
+### Styled_generated_image №2
 **Prompt:**  
 "a xon dog in astronaut costume against moon and stars. The xon dog stands proudly on the rocky lunar surface, with its paw slightly raised as if exploring"  
 ![Tuning Output 3](./images/styled_generated_image_1.png)
 
----
-
-#### Sample 3
+### Styled_generated_image №3
 **Prompt:**  
 "'a xon dog in cool sunglasses sitting in the sport car, smillings and have good time"  
 ![Tuning Output 3](./images/styled_generated_image_2.png)
