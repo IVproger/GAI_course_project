@@ -106,7 +106,8 @@ def generate_prior_preservation_samples(
     train_transforms,
     batch_size=64,
     num_inference_steps=50,
-    guidance_scale=7.5
+    guidance_scale=7.5,
+    save_path=None
 ):
     """
     Generate prior preservation samples for Stable Diffusion fine-tuning.
@@ -127,9 +128,10 @@ def generate_prior_preservation_samples(
         batch_size: Batch size for generation
         num_inference_steps: Number of inference steps
         guidance_scale: Guidance scale
+        save_path: Directory path to save prior images and tensors (optional)
     
     Returns:
-        tuple: (prior_latents_list, generated_images)
+        tuple: (prior_latents_tensor, prior_embeddings, prior_attention_mask, generated_images)
     """
     # Create a frozen copy of the original UNet for generating prior samples
     unet_pretrained = UNet2DConditionModel.from_pretrained(
@@ -168,8 +170,8 @@ def generate_prior_preservation_samples(
             )
         
         for j in range(current_batch_size):
-            gen_image = output.images[j].convert("RGB")
-            
+            gen_image = output.images[j].convert("RGB")      
+                  
             gen_image_tensor = train_transforms(gen_image).unsqueeze(0).to(device, dtype=weight_dtype)
             with torch.no_grad():
                 latent = vae.encode(gen_image_tensor).latent_dist.sample() * vae.config.scaling_factor
@@ -177,7 +179,35 @@ def generate_prior_preservation_samples(
         
         total_generated += current_batch_size
     
-    return prior_latents_list
+    # Prepare prior prompt embeddings
+    prior_inputs = tokenizer(
+        class_prompt, 
+        return_tensors="pt", 
+        max_length=tokenizer.model_max_length,
+        padding="max_length", 
+        truncation=True
+    )
+    prior_input_ids = prior_inputs["input_ids"].to(device)
+    prior_attention_mask = prior_inputs["attention_mask"].to(device)
+    
+    with torch.no_grad():
+        prior_embeddings = text_encoder(
+            input_ids=prior_input_ids, 
+            attention_mask=prior_attention_mask
+        ).last_hidden_state
+    
+    # Concatenate all latents into a single tensor
+    prior_latents_tensor = torch.cat(prior_latents_list, dim=0)
+    
+    # Save tensors if save path is provided
+    if save_path:
+        import os
+        os.makedirs(save_path, exist_ok=True)
+        torch.save(prior_latents_tensor, os.path.join(save_path, 'prior_latents_tensor.pt'))
+        torch.save(prior_embeddings, os.path.join(save_path, 'prior_embeddings.pt'))
+        torch.save(prior_attention_mask, os.path.join(save_path, 'prior_attention_mask.pt'))
+    
+    return prior_latents_tensor, prior_embeddings, prior_attention_mask
 
 def generate_and_save_images(
     pipeline,
