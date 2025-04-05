@@ -5,6 +5,7 @@ import subprocess
 from diffusers import UNet2DConditionModel, StableDiffusionPipeline
 import os
 from pathlib import Path
+import numpy as np
 
 def create_rare_token(tokenizer, num_tokens=1, token_range=(5000, 10000), max_length=3, seed=None):
     """
@@ -61,6 +62,14 @@ def visualize_image(dataset, idx):
     plt.title(f"Prompt: {dataset.subject_prompt if dataset.use_dreambooth_prompts else dataset.class_prompt}")
     plt.axis('off')
     plt.show()
+    
+def set_seed(seed: int):
+    """Sets random seed for reproducibility."""
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)    
 
 def collate_fn(examples):
     """
