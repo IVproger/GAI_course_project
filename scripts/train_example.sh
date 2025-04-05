@@ -10,7 +10,7 @@
 # ==========================================================================
 
 # Set configuration paths
-TRAIN_CONFIG_PATH="configs/train_dog_dreambooth.yaml" 
+TRAIN_CONFIG_PATH="configs/train_duck_toy_dreambooth.yaml" 
 ACCELERATE_CONFIG_PATH="configs/accelerate_config.yaml"
 
 echo "=== Starting DreamBooth Training ==="
