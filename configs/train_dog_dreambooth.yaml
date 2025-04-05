@@ -2,6 +2,7 @@
 project_name: "DreamBooth Training"
 task_name: "dreambooth_dog"
 reuse_last_task_id: false
+output_uri: false # save into clear ml artifact store
 
 # Model details
 model_name: "CompVis/stable-diffusion-v1-4"
@@ -51,7 +52,7 @@ gradient_accumulation_steps: 1 # Accumulate grads for larger effective batch siz
 save_model_epochs: 1000 # Frequency to save checkpoints
 save_model_steps: null # Alternative: save every N steps
 output_dir: "outputs" # Base directory for local saving
-log_image_epochs: 100 # Frequency to log sample images
+log_image_epochs: 50 # Frequency to log sample images
 
 # Misc
 seed: 42 # For reproducibility

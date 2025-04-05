@@ -244,9 +244,9 @@ class DreamBoothTrainer:
         with torch.autocast(self.accelerator.device.type, dtype=(torch.float16 if config['mixed_precision'] == 'fp16' else torch.bfloat16 if config['mixed_precision'] == 'bf16' else torch.float32)):
              images = eval_pipeline(
                  prompt,
-                 num_inference_steps=100, # Use a reasonable number of steps for eval
-                 guidance_scale=7.5,       # Standard guidance scale
-                 num_images_per_prompt=4, # Generate a few samples
+                 num_inference_steps = 100, # Use a reasonable number of steps for eval
+                 guidance_scale = 7.5,       # Standard guidance scale
+                 num_images_per_prompt = 3, # Generate a few samples
                  generator=generator
              ).images
 

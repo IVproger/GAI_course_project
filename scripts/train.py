@@ -39,7 +39,7 @@ def main():
             project_name=config['project_name'],
             task_name=config['task_name'],
             reuse_last_task_id=config.get('reuse_last_task_id', False),
-            output_uri = True # Automatically upload artifacts saved to output_dir
+            output_uri = config.get('output_uri', False) 
         )
         # Connect config dictionary
         task.connect(config)

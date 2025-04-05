@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
 # Adds the current working directory to the PYTHONPATH
-export PYTHONPATH="$PYTHONPATH:$(pwd)"
+echo 'export PYTHONPATH="$PYTHONPATH:$(pwd)"' >> ~/.bashrc
+source ~/.bashrc
