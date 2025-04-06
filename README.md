@@ -80,7 +80,7 @@ GAI_course_project/
    pip install -r requirements.txt
    ```
    
-## Usage
+<!-- ## Usage
 
 1. **Upload Reference Images:**  
    Users are required to upload 5 reference images of the subject.
@@ -91,7 +91,7 @@ GAI_course_project/
 3. **Generate Images:**  
    The backend processes the input using the DreamBooth fine-tuning method to generate stylized images. The results are displayed via the Gradio interface.
 
-For further experiments and analysis, refer to the Jupyter Notebook in the `notebooks` directory.
+For further experiments and analysis, refer to the Jupyter Notebook in the `notebooks` directory. -->
 
 ## Contributors
 
