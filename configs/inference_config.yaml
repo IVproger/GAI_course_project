@@ -1,0 +1,20 @@
+# configs/inference_config.yaml
+
+# Model Configuration
+model_base: "CompVis/stable-diffusion-v1-4"
+model_dir: "models"
+task_name: "dog_dreambooth"
+
+# Model Paths
+unet_path: "models/dog_dreambooth/unet_final.pt"
+text_encoder_path: "models/dog_dreambooth/text_encoder_final.pt"
+
+# Output Configuration
+output_dir: "inference_outputs/dog_dreambooth/inference_results"
+output_path: "inference_outputs/dog_dreambooth/inference_results/generated.png"
+
+# Generation Parameters
+prompt: "a photo of xon dog with sunglasses"
+num_steps: 100
+guidance_scale: 7.5
+seed: 42

@@ -1,0 +1,15 @@
+# configs/token_selection_config.yaml
+
+# Task Information
+task_name: "duck_toy_dreambooth"
+concept_type: "duck_toy"
+
+# Model Configuration
+model_name: "CompVis/stable-diffusion-v1-4"
+
+# Token Selection Parameters
+num_suggestions: 10
+token_json_path: "configs/rare_tokens.json"
+
+# Optional: Predefined Token (if you already know which token to use)
+# predefined_token: "xon"

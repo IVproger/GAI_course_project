@@ -1,0 +1,12 @@
+{
+  "dog_dreambooth": {
+    "token": "xon",
+    "concept_type": "dog",
+    "model_name": "CompVis/stable-diffusion-v1-4"
+  },
+  "duck_toy_dreambooth": {
+    "token": "miff",
+    "concept_type": "duck_toy",
+    "model_name": "CompVis/stable-diffusion-v1-4"
+  }
+}
