@@ -62,8 +62,15 @@ GAI_course_project/
    ```
 2. **Install Dependencies:**
    ```bash
-   poetry shell
+   # Option 1: Using env activate (recommended)
    poetry install
+   poetry env use python
+   poetry env activate
+
+   # Option 2: Using shell plugin
+   poetry plugin add poetry-shell-plugin
+   poetry install
+   poetry shell
    ```
    **OR**
    ```bash
