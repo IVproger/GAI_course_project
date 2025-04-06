@@ -64,7 +64,7 @@ GAI_course_project/
    ```bash
    # Option 1: Using env activate (recommended)
    poetry install
-   poetry env use python
+   poetry env use python3.11
    poetry env activate
 
    # Option 2: Using shell plugin
