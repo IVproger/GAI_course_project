@@ -1,0 +1,11 @@
+model_base: "models/production_ready"
+
+unet_path: "models/production_ready/unet/diffusion_pytorch_model.safetensors"
+text_encoder_path: "models/production_ready/text_encoder/model.safetensors"
+
+seed: 42
+
+num_steps: 100             
+guidance_scale: 7.5 
+
+output_dir: "outputs" 
