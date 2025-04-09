@@ -1,0 +1,27 @@
+# configs/prior_generation_config.yaml
+
+# ==========================================================================
+# Prior Preservation Data Generation Configuration
+# ==========================================================================
+
+# Model Configuration
+model_name: "runwayml/stable-diffusion-v1-5"  # Base model to use
+revision: null                                # Specific model revision (null for default)
+variant: null                                 # Model variant (null for default)
+
+# Output Configuration
+prior_data_dir: "data/prior_preservation/dog"  # Directory to save generated images
+
+# Generation Parameters
+class_prompt: "a photo of dog"                # Class prompt (e.g., "a photo of dog")
+num_prior_images: 1000                         # Number of class images to generate
+image_resolution: 512                         # Resolution of generated images
+prior_generation_batch_size: 64              # Batch size for generation
+
+# Advanced Generation Settings
+prior_num_inference_steps: 50                 # Steps per image generation
+prior_guidance_scale: 7.5                     # CFG scale for generation
+
+# Hardware & Performance Settings
+seed: 42                                      # Random seed for reproducibility
+mixed_precision: "fp16"                       # Options: "no", "fp16", "bf16"

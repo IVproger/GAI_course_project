@@ -2,11 +2,16 @@
   "dog_dreambooth": {
     "token": "xon",
     "concept_type": "dog",
-    "model_name": "CompVis/stable-diffusion-v1-4"
+    "model_name": "runwayml/stable-diffusion-v1-5"
+  },
+  "monster_toy_dreambooth": {
+    "token": "miff",
+    "concept_type": "monster_toy",
+    "model_name": "runwayml/stable-diffusion-v1-5"
   },
   "duck_toy_dreambooth": {
-    "token": "miff",
+    "token": "brux",
     "concept_type": "duck_toy",
-    "model_name": "CompVis/stable-diffusion-v1-4"
+    "model_name": "runwayml/stable-diffusion-v1-5"
   }
 }
