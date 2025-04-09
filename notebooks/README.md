@@ -1,5 +1,3 @@
----
-
 # 📓 Project Notebooks  
 
 Welcome to the **notebooks** directory! This folder contains Jupyter notebooks used for testing, experimenting, and refining our approach to diffusion models and DreamBooth fine-tuning.  

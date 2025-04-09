@@ -5,7 +5,7 @@ task_name: "duck_toy_dreambooth"
 concept_type: "duck_toy"
 
 # Model Configuration
-model_name: "CompVis/stable-diffusion-v1-4"
+model_name: "runwayml/stable-diffusion-v1-5"
 
 # Token Selection Parameters
 num_suggestions: 10

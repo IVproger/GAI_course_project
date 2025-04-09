@@ -10,7 +10,7 @@
 # ==========================================================================
 
 # Set config path
-CONFIG_PATH="configs/inference_config.yaml"
+CONFIG_PATH="configs/inference/inference_duck_toy.yaml"
 
 # Create timestamp for unique filenames
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)

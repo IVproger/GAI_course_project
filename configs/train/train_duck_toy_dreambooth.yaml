@@ -1,55 +1,53 @@
 # configs/train_dog_dreambooth.yaml
 project_name: "DreamBooth Training"
-task_name: "dreambooth_dog"
+task_name: "duck_toy_dreambooth"
 reuse_last_task_id: false
 output_uri: false # save into clear ml artifact store
 
 # Model details
-model_name: "CompVis/stable-diffusion-v1-4"
+model_name: "runwayml/stable-diffusion-v1-5"
 revision: null
 variant: null
 tokenizer_name: "openai/clip-vit-base-patch32" # Often same as model_name or derived
 
 # Prompts & Identifiers
-subject_tokens: "xon"         # Unique identifier token(s)
-subject_prompt: "a photo of xon dog" # Instance prompt
-class_prompt: "a photo of a dog"       # Class prompt for prior preservation
+subject_tokens: "brux"         # Unique identifier token(s)
+subject_prompt: "a photo of brux duck toy" # Instance prompt
+class_prompt: "a photo of a duck toy"       # Class prompt for prior preservation
 
 # Data paths
-subject_image_dir: "data/paper_dataset/dog"
-prior_data_dir: "data/prior_imgs/dog_updated" # Directory containing pre-generated priors
-# prior_data_dir: "data/prior_imgs/doggg"
+subject_image_dir: "data/paper_dataset/duck_toy"
+prior_data_dir: "data/prior_preservation/duck_toy" # Directory containing pre-generated priors
 
 # Prior Preservation Settings
 use_prior_preservation: true
 generate_prior_images: false # Set to true only when running generate_priors.py
-# num_prior_images: 1000        # Number of images to generate/use
-num_prior_images: 10
-prior_loss_weight: 1.0
+num_prior_images: 1000        # Number of images to generate/use
+prior_loss_weight: 5.0
 prior_generation_batch_size: 64     # Batch size for generating priors
 prior_num_inference_steps: 50     # Inference steps for prior generation
 prior_guidance_scale: 7.5       # Guidance scale for prior generation
 
 # Training Settings
-num_train_epochs: 101
-learning_rate: 2.0e-6
+num_train_epochs: 150
+learning_rate: 3.0e-6
 lr_scheduler_type: "constant" # e.g., constant, linear, cosine
-lr_warmup_steps: 500
+lr_warmup_steps: 50
 optimizer:
   type: "AdamW"
   betas: [0.9, 0.999]
-  weight_decay: 0.01
-  eps: 1.0e-8
+  weight_decay: 0.03
+  eps: 2.0e-6
 train_batch_size: 5
 prior_batch_size_train: 5 # Batch size for prior latents during training
 use_dreambooth_prompts: true # Whether to use standard DB prompt format
 ddpm_num_train_timesteps: 1000
-image_resolution: 256 # Target resolution
+image_resolution: 512 # Target resolution
 mixed_precision: "fp16" # Or "bf16" or "no" for float32
 gradient_accumulation_steps: 1 # Accumulate grads for larger effective batch size
 
 # Logging & Saving
-save_model_epochs: 1000 # Frequency to save checkpoints
+save_model_epochs: 100000 # Frequency to save checkpoints
 save_model_steps: null # Alternative: save every N steps
 output_dir: "outputs" # Base directory for local saving
 log_image_epochs: 50 # Frequency to log sample images
