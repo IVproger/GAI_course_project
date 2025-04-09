@@ -4,7 +4,7 @@
 # Prior Preservation Data Generation Script
 # ==========================================================================
 
-CONFIG_PATH="configs/prior_generation_config.yaml"
+CONFIG_PATH="configs/prior/prior_generation_dog_config.yaml"
 
 echo "=== Generating Prior Preservation Data ==="
 echo "→ Using config file: ${CONFIG_PATH}"
