@@ -8,9 +8,9 @@ from transformers import CLIPTextModel, CLIPTokenizer
 from accelerate.utils import set_seed
 from collections import OrderedDict
 
-from model_setup import load_unet
-from utils import get_free_gpu
-from enums import AnimalType
+from src.model_setup import load_unet
+from src.utils import get_free_gpu
+from src.enums import AnimalType
 
 
 # --- Helper: Load config ---

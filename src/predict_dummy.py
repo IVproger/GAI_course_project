@@ -1,4 +1,4 @@
-from enums import AnimalType
+from src.enums import AnimalType
 
 def predict(prompt: str, animal_type: AnimalType) -> str:
     """
@@ -11,4 +11,4 @@ def predict(prompt: str, animal_type: AnimalType) -> str:
     Returns:
         str: A constant path to a dummy image.
     """
-    return "images/styled_generated_image_0.png"
+    return "images/styled_generated_image_1.png"
