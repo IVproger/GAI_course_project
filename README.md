@@ -99,7 +99,7 @@ For further experiments and analysis, refer to the Jupyter Notebook in the `note
 - **Roman Makeev**
 - **Maxim Martyshov**
 
-## Project Stage №1: Proof-of-Concept (POC)
+## Proof-of-Concept (POC)
 
 This stage represents the initial proof-of-concept where the DreamBooth fine-tuning process was applied. In this phase, the model was fine-tuned on the provided reference images (
 Corgi dog from DreamBooth ref dataset) to capture the unique subject characteristics, resulting in early experimental outputs.
