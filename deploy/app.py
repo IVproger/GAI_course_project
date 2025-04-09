@@ -10,11 +10,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from src.enums import AnimalType
+
 USE_BACKEND = True
+DOCKER = True
+
 DUMMY_IMAGE_PATH = "images/styled_generated_image_2.png" 
 
-# Backend API URL
-API_URL = "http://localhost:8000/predict"
+if DOCKER:
+    API_URL = "http://api:8000/predict"
+else:
+    API_URL = "http://localhost:8000/predict"
 
 # Mapping of animal types to their unique tokens and descriptions
 ANIMAL_OPTIONS = {
