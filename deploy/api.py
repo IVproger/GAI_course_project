@@ -1,3 +1,5 @@
+# python -m uvicorn deploy.api:app --reload
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from src.enums import AnimalType
