@@ -25,6 +25,7 @@ else:
 ANIMAL_OPTIONS = {
     "dog": {"token": "xon", "example": "A photo of a xon dog on the beach", "enum": AnimalType.DOG},
     "duck": {"token": "miff", "example": "A painting of a miff duck in a fantasy forest", "enum": AnimalType.DUCK},
+    "monster": {"token": "miff", "example": "A photo of a miff monster in the car", "enum": AnimalType.MONSTER},
 }
 
 st.set_page_config(page_title="Animal Image Generator", layout="centered")
