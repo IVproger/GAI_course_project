@@ -1,8 +1,8 @@
 # configs/inference/dog.yaml
-model_base: "models/production_ready"
+model_base: "runwayml/stable-diffusion-v1-5"
 
-unet_path: "models/production_ready/unet/diffusion_pytorch_model.safetensors"
-text_encoder_path: "models/production_ready/text_encoder/model.safetensors"
+unet_path: "outputs/dreambooth_dog/unet_final.pt"
+text_encoder_path: "outputs/dreambooth_dog/text_encoder_final.pt"
 
 seed: 42
 

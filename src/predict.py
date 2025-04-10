@@ -32,18 +32,37 @@ def load_model_components(config, device, weight_dtype):
     text_encoder = CLIPTextModel.from_pretrained(config['model_base'], subfolder="text_encoder")
 
     # Load UNet weights
-    unet_state_dict = torch.load(config['unet_path'], map_location="cpu")
-    if any("module." in k for k in unet_state_dict):
-        unet_state_dict = OrderedDict((k[7:], v) if k.startswith("module.") else (k, v)
-                                      for k, v in unet_state_dict.items())
-    unet.load_state_dict(unet_state_dict)
+    try:
+        unet_state_dict = torch.load(config['unet_path'], map_location="cpu")
+        if not any("module." in k for k in unet_state_dict.keys()):
+            unet.load_state_dict(unet_state_dict)
+        else:
+            from collections import OrderedDict
+            new_state_dict = OrderedDict()
+            for k, v in unet_state_dict.items():
+                name = k[7:] if k.startswith("module.") else k
+                new_state_dict[name] = v
+            unet.load_state_dict(new_state_dict)
+        print(f"Loaded UNet weights from: {config['unet_path']}")
 
-    # Load Text Encoder weights
-    text_encoder_state_dict = torch.load(config['text_encoder_path'], map_location="cpu")
-    if any("module." in k for k in text_encoder_state_dict):
-        text_encoder_state_dict = OrderedDict((k[7:], v) if k.startswith("module.") else (k, v)
-                                              for k, v in text_encoder_state_dict.items())
-    text_encoder.load_state_dict(text_encoder_state_dict)
+        text_encoder_state_dict = torch.load(config['text_encoder_path'], map_location="cpu")
+        if not any("module." in k for k in text_encoder_state_dict.keys()):
+            text_encoder.load_state_dict(text_encoder_state_dict)
+        else:
+            from collections import OrderedDict
+            new_state_dict = OrderedDict()
+            for k, v in text_encoder_state_dict.items():
+                name = k[7:] if k.startswith("module.") else k
+                new_state_dict[name] = v
+            text_encoder.load_state_dict(new_state_dict)
+        print(f"Loaded Text Encoder weights from: {config['text_encoder_path']}")
+
+    except FileNotFoundError as e:
+        print(f"Error: Could not find state dict file: {e}")
+        return
+    except Exception as e:
+        print(f"Error loading state dicts: {e}")
+        return
 
     # Move to device and eval
     for model in [unet, vae, text_encoder]:

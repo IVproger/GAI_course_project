@@ -12,7 +12,7 @@ load_dotenv()
 from src.enums import AnimalType
 
 USE_BACKEND = True
-DOCKER = True
+DOCKER = False  # Changed to False since we're running locally
 
 DUMMY_IMAGE_PATH = "images/styled_generated_image_2.png" 
 

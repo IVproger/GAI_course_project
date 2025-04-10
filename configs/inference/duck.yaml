@@ -1,7 +1,7 @@
-model_base: "models/production_ready"
+model_base: "runwayml/stable-diffusion-v1-5"
 
-unet_path: "models/production_ready/unet/diffusion_pytorch_model.safetensors"
-text_encoder_path: "models/production_ready/text_encoder/model.safetensors"
+unet_path: "outputs/duck_toy_dreambooth/unet_final.pt"
+text_encoder_path: "outputs/duck_toy_dreambooth/text_encoder_final.pt"
 
 seed: 42
 

@@ -3,7 +3,8 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from src.enums import AnimalType
-from src.predict_dummy import predict
+# from src.predict_dummy import predict
+from src.predict import predict
 import os
 
 from dotenv import load_dotenv
