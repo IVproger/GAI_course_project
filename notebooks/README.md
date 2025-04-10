@@ -1,42 +1,53 @@
-# 📓 Project Notebooks  
+# Jupyter Notebooks
 
-Welcome to the **notebooks** directory! This folder contains Jupyter notebooks used for testing, experimenting, and refining our approach to diffusion models and DreamBooth fine-tuning.  
+This directory contains Jupyter notebooks used for experimentation, analysis, and development of the DreamBooth project.
 
----
+## Notebooks Overview
 
-## 📌 Notebook Overview  
+### Main Notebooks
 
-### 🖼️ **1. diffusion_text-img.ipynb**  
-> **Goal:** Explore training and inference of text-to-image diffusion models using textual prompts.  
+- `POC_DreamBooth.ipynb` - Proof of Concept implementation of DreamBooth
+  - Contains the initial implementation and testing of the DreamBooth approach
+  - Demonstrates the fine-tuning process on reference images
+  - Shows example generations and results
 
-🔹 Understand how diffusion models generate images from text.  
-🔹 Experiment with different prompts to analyze their effect on output.  
-🔹 Gain insights into diffusion-based generative AI techniques.  
+- `diffusion_text-img.ipynb` - Text-to-Image Diffusion Model Experiments
+  - Exploratory notebook for text-to-image diffusion models
+  - Contains experiments with different model architectures
+  - Includes visualization and analysis tools
 
----
+- `clearml.ipynb` - Experiment Tracking with ClearML
+  - Integration with ClearML for experiment tracking
+  - Demonstrates logging and monitoring capabilities
+  - Contains examples of metric tracking and visualization
 
-### 🚀 **2. POC_DreamBooth.ipynb**  
-> **Goal:** Test the DreamBooth fine-tuning approach and establish a strong starting point for model training.  
+### Additional Files
 
-🔹 Implement initial fine-tuning on custom subject images.  
-🔹 Evaluate results and identify key parameters for improvement.  
-🔹 Establish a working baseline for further optimizations.  
+- `config.txt` - Configuration settings for notebooks
+- `experiments_and_raw_code/` - Directory containing experimental code and raw implementations
 
----
+## Usage
 
-## 📂 Additional Contents  
+1. Ensure you have Jupyter installed in your environment
+2. Install required dependencies from the main project's requirements.txt
+3. Launch Jupyter Notebook or Jupyter Lab
+4. Open the desired notebook
 
-📁 **experiments_and_raw_code/** – Contains early-stage tests and code snippets.  
-🖼️ **styled_generated_image_0.png** – Styled generation from DreamBooth tests.  
+## Notebook Dependencies
 
----
+Each notebook may require specific dependencies. Make sure to:
+1. Run all cells in order
+2. Install any additional requirements mentioned in the notebook
+3. Check the notebook's first cell for specific setup instructions
 
-## 🔍 Next Steps  
+## Experiment Tracking
 
-✅ Refine training strategies for better image fidelity.  
-✅ Experiment with new prompts and style transfer methods.  
-✅ Optimize the DreamBooth pipeline for enhanced personalization.  
+The `clearml.ipynb` notebook demonstrates how to:
+- Track experiments using ClearML
+- Log metrics and parameters
+- Visualize results
+- Compare different runs
 
----
+## Note
 
-💡 *For more details, refer to the main [README.md](../README.md) of the project.* 🚀
+These notebooks are primarily for experimentation and development. For production use, refer to the scripts in the `scripts/` directory.
