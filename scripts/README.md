@@ -1,31 +1,124 @@
-# ▶️ Executable Scripts (`scripts/`)
+# Scripts Directory
 
-This directory contains the main Python scripts that serve as entry points for running different stages of the DreamBooth project workflow.
+This directory contains all executable scripts for training, inference, and utility functions in the DreamBooth project.
 
-## Purpose
+## Main Scripts
 
--   **Workflow Orchestration:** Provides user-facing scripts to execute specific tasks like generating prior data, training a model, or performing inference.
--   **Integration:** These scripts integrate the various components defined in the `src/` directory (data loading, model setup, training logic) and utilize configurations from the `configs/` directory.
+### Training and Model Management
 
-## Key Scripts
+- `train.py` - Main training script for DreamBooth fine-tuning
+  - Handles model training configuration
+  - Manages training loop
+  - Saves checkpoints and logs
 
--   **`generate_priors.py`**:
-    -   **Goal:** Generates and saves the necessary data (latents, embeddings) for prior preservation loss.
-    -   **Usage:** Run this script before training if `use_prior_preservation` is enabled in the config and the prior data doesn't exist yet.
-    -   Example: `python -m scripts.generate_priors --config configs/train_dog_dreambooth.yaml`
+- `generate_priors.py` - Generates prior preservation data
+  - Creates prior preservation images
+  - Processes reference images
+  - Saves generated data
 
--   **`train.py`**:
-    -   **Goal:** Executes the main model fine-tuning process using DreamBooth and prior preservation (if enabled).
-    -   **Usage:** This script loads data, sets up models, runs the training loop defined in `src/trainer.py`, saves checkpoints to `outputs/`, and logs metrics (e.g., to ClearML). It should be launched using `accelerate`.
-    -   Example: `accelerate launch scripts/train.py --config configs/train_dog_dreambooth.yaml`
+- `find_rare_token.py` - Utility for finding rare tokens
+  - Analyzes token frequency
+  - Selects appropriate tokens
+  - Generates token reports
 
--   **`inference.py`**:
-    -   **Goal:** Loads a trained DreamBooth model (specifically, the fine-tuned UNet and text encoder weights saved during training) and generates images based on text prompts.
-    -   **Usage:** Used to test and utilize the fine-tuned model after training is complete. Requires paths to the saved model checkpoints from the `outputs/` directory.
-    -   Example: `python -m scripts.inference --model_base "CompVis/stable-diffusion-v1-4" --unet_path "outputs/dog_dreambooth_XYZ/unet_final.pt" --text_encoder_path "outputs/dog_dreambooth_XYZ/text_encoder_final.pt" --prompt "a photo of xon dog"`
+### Inference and Generation
 
-## Running Scripts
+- `inference.py` - Handles model inference
+  - Loads trained models
+  - Generates images from prompts
+  - Saves generated outputs
 
-It is recommended to run these scripts from the **project root directory** (the directory containing `src/`, `scripts/`, `configs/`, etc.) using the `python -m <module_path>` syntax or `accelerate launch` for the training script. This ensures that Python can correctly resolve imports from the `src/` package.
+### Example Scripts
 
-`.sh` scripts will demonstrate you examples of how to run python script
+- `train_example.sh` - Example training script
+  - Shows training configuration
+  - Demonstrates parameter usage
+  - Provides usage examples
+
+- `prior_generation_example.sh` - Example prior generation
+  - Shows prior generation setup
+  - Demonstrates parameter usage
+  - Provides usage examples
+
+- `inference_example.sh` - Example inference script
+  - Shows inference configuration
+  - Demonstrates prompt usage
+  - Provides usage examples
+
+- `select_token_example.sh` - Example token selection
+  - Shows token selection process
+  - Demonstrates parameter usage
+  - Provides usage examples
+
+### Utility Scripts
+
+- `path_setup.sh` - Sets up environment paths
+  - Configures Python path
+  - Sets up environment variables
+  - Initializes workspace
+
+## Usage
+
+### Training
+
+```bash
+# Run training with example configuration
+./train_example.sh
+
+# Or run directly with Python
+python train.py --config configs/train/config.yaml
+```
+
+### Prior Generation
+
+```bash
+# Generate prior preservation data
+./prior_generation_example.sh
+
+# Or run directly
+python generate_priors.py --config configs/prior/config.yaml
+```
+
+### Inference
+
+```bash
+# Run inference with example configuration
+./inference_example.sh
+
+# Or run directly
+python inference.py --config configs/inference/config.yaml
+```
+
+### Token Selection
+
+```bash
+# Find and select rare tokens
+./select_token_example.sh
+
+# Or run directly
+python find_rare_token.py --config configs/token_selection_config.yaml
+```
+
+## Best Practices
+
+1. **Script Usage**
+   - Always check configuration files
+   - Use example scripts as templates
+   - Follow parameter guidelines
+
+2. **Environment Setup**
+   - Run path_setup.sh first
+   - Verify dependencies
+   - Check GPU availability
+
+3. **Error Handling**
+   - Check logs for errors
+   - Verify input data
+   - Monitor resource usage
+
+## Note
+
+- All scripts require proper configuration files
+- Check GPU requirements before running
+- Monitor memory usage during execution
+- Keep logs for debugging purposes

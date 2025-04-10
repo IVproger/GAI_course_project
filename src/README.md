@@ -1,23 +1,142 @@
-# 🐍 Source Code (`src/`)
+# Source Code Directory
 
-This directory contains the core Python source code for the DreamBooth fine-tuning project. It is structured as a Python package (due to the presence of `__init__.py`) and holds reusable modules implementing the project's logic.
+This directory contains the core source code for the DreamBooth project, including model implementation, training logic, and utility functions.
 
-## Purpose
+## Core Components
 
--   **Modularity:** Encapsulates distinct functionalities into separate modules (data handling, model loading, training logic, utilities).
--   **Reusability:** Allows code components to be imported and used across different scripts (e.g., training, inference, data generation).
--   **Maintainability:** Organizes the codebase logically, making it easier to understand, debug, and extend.
+### Model and Training
 
-## Key Modules
+- `trainer.py` - Main training implementation
+  - Training loop logic
+  - Loss computation
+  - Checkpoint management
+  - Metrics tracking
 
--   **`__init__.py`**: Makes the `src` directory recognizable as a Python package.
--   **`config_loader.py`**: Utility functions for loading and parsing configuration files (e.g., `.yaml`) from the `configs/` directory.
--   **`data_handling.py`**: Contains PyTorch `Dataset` classes (like `PriorClassDataset`), data transformations (`get_train_transforms`), collate functions (`collate_fn`), and functions for loading data (like `load_prior_data`). Handles preparation of data from the `data/` directory.
--   **`model_setup.py`**: Provides functions to load pre-trained model components (Tokenizer, Text Encoder, VAE, UNet, Scheduler) from Hugging Face `diffusers` and `transformers` libraries, and to create inference pipelines.
--   **`prior_generation.py`**: Implements the logic for generating the images/latents required for prior preservation loss, typically invoked by `scripts/generate_priors.py`.
--   **`trainer.py`**: Contains the main training loop logic (`DreamBoothTrainer` class), including optimizer/scheduler setup, loss calculation, gradient updates, integration with `accelerate`, checkpoint saving, and periodic evaluation/logging (using ClearML).
--   **`utils.py`**: Holds miscellaneous utility functions used across the project (e.g., `get_free_gpu` for device selection, `set_seed` for reproducibility, visualization helpers).
+- `model_setup.py` - Model initialization and configuration
+  - Model architecture setup
+  - Parameter initialization
+  - Model loading utilities
+
+- `prior_generation.py` - Prior preservation implementation
+  - Prior data generation
+  - Latent space processing
+  - Embedding computation
+
+### Data Handling
+
+- `data_handling.py` - Data processing utilities
+  - Dataset loading
+  - Data preprocessing
+  - Augmentation functions
+
+- `data.py` - Dataset implementations
+  - Custom dataset classes
+  - Data loading logic
+  - Transform pipelines
+
+### Utilities
+
+- `utils.py` - General utility functions
+  - Helper functions
+  - Common operations
+  - Shared utilities
+
+- `config_loader.py` - Configuration management
+  - Config file loading
+  - Parameter validation
+  - Default settings
+
+### Entry Points
+
+- `main.py` - Main application entry point
+  - Application initialization
+  - Command handling
+  - Service setup
+
+## Code Organization
+
+### Module Structure
+
+1. **Model Layer**
+   - Model architecture
+   - Training logic
+   - Inference code
+
+2. **Data Layer**
+   - Data loading
+   - Processing
+   - Augmentation
+
+3. **Utility Layer**
+   - Helper functions
+   - Configuration
+   - Common operations
+
+### Key Features
+
+1. **Modularity**
+   - Clear separation of concerns
+   - Reusable components
+   - Extensible design
+
+2. **Configuration**
+   - Flexible configuration
+   - Parameter validation
+   - Default settings
+
+3. **Error Handling**
+   - Robust error checking
+   - Informative messages
+   - Recovery mechanisms
 
 ## Usage
 
-Modules within `src/` are imported and utilized by the executable scripts located in the `scripts/` directory to perform tasks like data preparation, model training, and inference.
+### Importing Modules
+
+```python
+from src.model_setup import setup_model
+from src.data_handling import load_dataset
+from src.utils import process_image
+```
+
+### Configuration
+
+```python
+from src.config_loader import load_config
+
+config = load_config("configs/train.yaml")
+```
+
+### Training
+
+```python
+from src.trainer import Trainer
+
+trainer = Trainer(config)
+trainer.train()
+```
+
+## Best Practices
+
+1. **Code Organization**
+   - Follow module structure
+   - Use clear naming
+   - Document functions
+
+2. **Error Handling**
+   - Use try-except blocks
+   - Validate inputs
+   - Log errors
+
+3. **Performance**
+   - Optimize critical paths
+   - Use appropriate data structures
+   - Monitor memory usage
+
+## Note
+
+- Keep code modular and maintainable
+- Document all public interfaces
+- Follow Python best practices
+- Maintain consistent style
+- Test thoroughly before deployment
