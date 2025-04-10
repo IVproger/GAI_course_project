@@ -10,13 +10,15 @@ This project implements a service for generating stylized images using the Dream
 - **Personalized Generation:** Fine-tunes a diffusion model using a few reference images to capture subject identity.
 - **Interactive UI:** Uses Gradio to let users upload images and specify text prompts for stylization.
 - **State-of-the-Art Methodology:** Inspired by the DreamBooth approach, which incorporates a class-specific prior preservation loss to maintain subject fidelity while generating diverse outputs.
+- **Multi-Animal Support:** Currently supports fine-tuning and generation for multiple animal types (dogs and ducks).
+- **Flexible Prediction Pipeline:** Robust inference system with configurable parameters and automatic GPU selection.
 
 ## Methodology
 
 ### DreamBooth Approach
-The core idea behind DreamBooth is to “implant” a subject into a text-to-image diffusion model using a few images. Key highlights include:
+The core idea behind DreamBooth is to "implant" a subject into a text-to-image diffusion model using a few images. Key highlights include:
 - **Unique Identifier Binding:** A rare token (or unique identifier) is attached to the subject, enabling the model to generate the subject in a variety of contexts.
-- **Fine-Tuning:** The model is fine-tuned with both subject images and corresponding prompts (e.g., “a [V] dog”), leveraging a class-specific prior preservation loss to prevent overfitting and language drift.
+- **Fine-Tuning:** The model is fine-tuned with both subject images and corresponding prompts (e.g., "a [V] dog"), leveraging a class-specific prior preservation loss to prevent overfitting and language drift.
 - **Applications:** This method allows for subject recontextualization, text-guided view synthesis, and artistic rendering—paving the way for creative applications like stylized image generation.
 
 For more details, refer to the paper:  
@@ -80,18 +82,33 @@ GAI_course_project/
    pip install -r requirements.txt
    ```
    
-<!-- ## Usage
+## Usage
 
-1. **Upload Reference Images:**  
-   Users are required to upload 5 reference images of the subject.
-   
-2. **Input Text Prompt:**  
-   Provide a descriptive text prompt to guide the stylization process.
-   
-3. **Generate Images:**  
-   The backend processes the input using the DreamBooth fine-tuning method to generate stylized images. The results are displayed via the Gradio interface.
+1. **Model Training:**
+   - The system supports training models for different animal types (currently dogs and ducks)
+   - Training configurations are stored in `configs/training/` directory
+   - Each animal type has its specific configuration file
 
-For further experiments and analysis, refer to the Jupyter Notebook in the `notebooks` directory. -->
+2. **Image Generation:**
+   ```python
+   from src.predict import predict
+   from src.enums import AnimalType
+
+   # Generate an image of a dog
+   output_path = predict("a dog in space suit on the moon", AnimalType.DOG)
+
+   # Generate an image of a duck
+   output_path = predict("a duck swimming in a pond", AnimalType.DUCK)
+   ```
+
+3. **Configuration:**
+   - Inference configurations are stored in `configs/inference/` directory
+   - Each animal type has its specific configuration file (e.g., `dog.yaml`, `duck.yaml`)
+   - Configurations include model paths, generation parameters, and output settings
+
+4. **Output:**
+   - Generated images are saved in the configured output directory
+   - Filenames include the animal type and timestamp for easy tracking
 
 ## Contributors
 
