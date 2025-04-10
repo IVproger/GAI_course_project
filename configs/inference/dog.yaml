@@ -1,0 +1,12 @@
+# configs/inference/dog.yaml
+model_base: "runwayml/stable-diffusion-v1-5"
+
+unet_path: "outputs/dreambooth_dog/unet_final.pt"
+text_encoder_path: "outputs/dreambooth_dog/text_encoder_final.pt"
+
+seed: 42
+
+num_steps: 100             
+guidance_scale: 7.5 
+
+output_dir: "outputs" 
