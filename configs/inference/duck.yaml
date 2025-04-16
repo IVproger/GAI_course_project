@@ -1,0 +1,11 @@
+model_base: "runwayml/stable-diffusion-v1-5"
+
+unet_path: "outputs/duck_toy_dreambooth/unet_final.pt"
+text_encoder_path: "outputs/duck_toy_dreambooth/text_encoder_final.pt"
+
+seed: 42
+
+num_steps: 100             
+guidance_scale: 7.5 
+
+output_dir: "outputs" 

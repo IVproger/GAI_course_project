@@ -10,13 +10,15 @@ This project implements a service for generating stylized images using the Dream
 - **Personalized Generation:** Fine-tunes a diffusion model using a few reference images to capture subject identity.
 - **Interactive UI:** Uses Gradio to let users upload images and specify text prompts for stylization.
 - **State-of-the-Art Methodology:** Inspired by the DreamBooth approach, which incorporates a class-specific prior preservation loss to maintain subject fidelity while generating diverse outputs.
+- **Multi-Animal Support:** Currently supports fine-tuning and generation for multiple animal types (dogs and ducks).
+- **Flexible Prediction Pipeline:** Robust inference system with configurable parameters and automatic GPU selection.
 
 ## Methodology
 
 ### DreamBooth Approach
-The core idea behind DreamBooth is to “implant” a subject into a text-to-image diffusion model using a few images. Key highlights include:
+The core idea behind DreamBooth is to "implant" a subject into a text-to-image diffusion model using a few images. Key highlights include:
 - **Unique Identifier Binding:** A rare token (or unique identifier) is attached to the subject, enabling the model to generate the subject in a variety of contexts.
-- **Fine-Tuning:** The model is fine-tuned with both subject images and corresponding prompts (e.g., “a [V] dog”), leveraging a class-specific prior preservation loss to prevent overfitting and language drift.
+- **Fine-Tuning:** The model is fine-tuned with both subject images and corresponding prompts (e.g., "a [V] dog"), leveraging a class-specific prior preservation loss to prevent overfitting and language drift.
 - **Applications:** This method allows for subject recontextualization, text-guided view synthesis, and artistic rendering—paving the way for creative applications like stylized image generation.
 
 For more details, refer to the paper:  
@@ -62,8 +64,15 @@ GAI_course_project/
    ```
 2. **Install Dependencies:**
    ```bash
-   poetry shell
+   # Option 1: Using env activate (recommended)
    poetry install
+   poetry env use python3.11
+   poetry env activate
+
+   # Option 2: Using shell plugin
+   poetry plugin add poetry-shell-plugin
+   poetry install
+   poetry shell
    ```
    **OR**
    ```bash
@@ -75,22 +84,70 @@ GAI_course_project/
    
 ## Usage
 
-1. **Upload Reference Images:**  
-   Users are required to upload 5 reference images of the subject.
-   
-2. **Input Text Prompt:**  
-   Provide a descriptive text prompt to guide the stylization process.
-   
-3. **Generate Images:**  
-   The backend processes the input using the DreamBooth fine-tuning method to generate stylized images. The results are displayed via the Gradio interface.
+1. **Model Training:**
+   - The system supports training models for different animal types (currently dogs and ducks)
+   - Training configurations are stored in `configs/training/` directory
+   - Each animal type has its specific configuration file
 
-For further experiments and analysis, refer to the Jupyter Notebook in the `notebooks` directory.
+2. **Image Generation:**
+   ```python
+   from src.predict import predict
+   from src.enums import AnimalType
+
+   # Generate an image of a dog
+   output_path = predict("a dog in space suit on the moon", AnimalType.DOG)
+
+   # Generate an image of a duck
+   output_path = predict("a duck swimming in a pond", AnimalType.DUCK)
+   ```
+
+3. **Configuration:**
+   - Inference configurations are stored in `configs/inference/` directory
+   - Each animal type has its specific configuration file (e.g., `dog.yaml`, `duck.yaml`)
+   - Configurations include model paths, generation parameters, and output settings
+
+4. **Output:**
+   - Generated images are saved in the configured output directory
+   - Filenames include the animal type and timestamp for easy tracking
 
 ## Contributors
 
 - **Ivan Golov** (i.golov@innopolis.university)
 - **Roman Makeev**
 - **Maxim Martyshov**
+
+## Proof-of-Concept (POC)
+
+This stage represents the initial proof-of-concept where the DreamBooth fine-tuning process was applied. In this phase, the model was fine-tuned on the provided reference images (
+Corgi dog from DreamBooth ref dataset) to capture the unique subject characteristics, resulting in early experimental outputs.
+
+### Source image:
+   ![Source image](./images/00.jpg)
+
+### Tuning Output Samples
+
+The images below are sample outputs obtained after tuning:
+
+### Target_generated_image
+ **Prompt:**  
+ "a xon dog"  
+ ![Tuning Output 1](./images/target_generated_image_0.png)
+
+### Styled_generated_image №1
+**Prompt:**  
+"a xon dog in beautifyl landscape with river, forest and mountines"  
+![Tuning Output 2](./images/styled_generated_image_0.png)
+
+### Styled_generated_image №2
+**Prompt:**  
+"a xon dog in astronaut costume against moon and stars. The xon dog stands proudly on the rocky lunar surface, with its paw slightly raised as if exploring"  
+![Tuning Output 3](./images/styled_generated_image_1.png)
+
+### Styled_generated_image №3
+**Prompt:**  
+"'a xon dog in cool sunglasses sitting in the sport car, smillings and have good time"  
+![Tuning Output 3](./images/styled_generated_image_2.png)
+
 
 ## References
 

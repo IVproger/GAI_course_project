@@ -1,0 +1,23 @@
+# configs/inference_config.yaml
+
+# Model Configuration
+model_base: "runwayml/stable-diffusion-v1-5"
+model_dir: "models"
+task_name: "dog_dreambooth"
+
+# Model Paths
+unet_path: "outputs/dreambooth_dog/unet_final.pt"
+text_encoder_path: "outputs/dreambooth_dog/text_encoder_final.pt"
+
+# Output Configuration
+output_dir: "inference_outputs/dog_dreambooth/inference_results"
+output_path: "inference_outputs/dog_dreambooth/inference_results/generated.png"
+
+# Generation Parameters
+prompt: "a photo of xon dog in the desert during a thunderstorm"
+num_steps: 100
+guidance_scale: 7.5
+seed: 42
+
+# xon dog with sunglasses
+# xon dog in swimming pool
