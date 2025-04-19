@@ -1,6 +1,6 @@
-# configs/train_dog_dreambooth.yaml
+# configs/train_dog_dreambooth_with_lens.yaml
 project_name: "DreamBooth Training"
-task_name: "dreambooth_dog"
+task_name: "dreambooth_dog_with_lens"
 reuse_last_task_id: false
 output_uri: false # save into clear ml artifact store
 
@@ -13,7 +13,9 @@ tokenizer_name: "openai/clip-vit-base-patch32" # Often same as model_name or der
 # Prompts & Identifiers
 subject_tokens: "xon"         # Unique identifier token(s)
 subject_prompt: "a photo of xon dog" # Instance prompt
+lens_prompt: "a photo of xon dog" # Lens prompt
 class_prompt: "a photo of a dog"       # Class prompt for prior preservation
+negative_prompt: "low quality, blurry, deformed" # Negative prompt for image generation
 
 # Data paths
 subject_image_dir: "data/paper_dataset/dog"
@@ -29,7 +31,6 @@ prior_num_inference_steps: 50     # Inference steps for prior generation
 prior_guidance_scale: 7.5       # Guidance scale for prior generation
 
 # Training Settings
-# best 250
 num_train_epochs: 350
 learning_rate: 2.0e-6
 train_text_encoder: true
@@ -49,10 +50,19 @@ mixed_precision: "fp16" # Or "bf16" or "no" for float32
 gradient_accumulation_steps: 1 # Accumulate grads for larger effective batch size
 
 # Logging & Saving
-# save_model_epochs: 50 # Frequency to save checkpoints
 save_model_steps: null # Alternative: save every N steps
-output_dir: "outputs" # Base directory for local saving
+output_dir: "lens_output2" # Base directory for local saving
 log_image_epochs: 50 # Frequency to log sample images
 
+# DiffusionLens Visualization Settings
+use_diffusion_lens: true # Enable DiffusionLens visualization
+diffusion_lens_epochs: 50 # Frequency to generate DiffusionLens visualizations (in epochs)
+diffusion_lens_params:
+  start_layer: 0 # Start visualization from this layer/step
+  end_layer: 20 # End visualization at this layer/step
+  step_layer: 1 # Visualize every N steps/layers
+  num_inference_steps: 100 # Number of inference steps
+  guidance_scale: 7.5 # Guidance scale
+
 # Misc
-seed: 42 # For reproducibility
+seed: 42 # For reproducibility 

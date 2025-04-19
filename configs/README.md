@@ -55,3 +55,23 @@ Configuration for token selection:
 
 ### rare_tokens.json
 Contains the list of rare tokens used for subject binding in the DreamBooth approach.
+
+## DiffusionLens Visualization Configuration
+
+Training configurations now support DiffusionLens for visualizing the diffusion process during training. 
+To enable this feature, add the following parameters to your training config:
+
+```yaml
+# DiffusionLens Visualization Settings
+use_diffusion_lens: true  # Enable DiffusionLens visualization
+diffusion_lens_epochs: 50  # Generate visualizations every N epochs
+diffusion_lens_params:
+  start_layer: 0  # Start visualization from this layer/step
+  end_layer: 20  # End visualization at this layer/step
+  step_layer: 1  # Visualize every N steps/layers
+  num_inference_steps: 100  # Number of inference steps
+  guidance_scale: 7.5  # Guidance scale
+```
+
+The DiffusionLens visualizations will be saved in `{output_dir}/{task_name}/diffusion_lens_images/`.
+This feature requires the DiffusionLens library to be installed.

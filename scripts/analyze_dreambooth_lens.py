@@ -43,7 +43,7 @@ GUIDANCE_SCALE = 7.5
 # 'Layers' in this context likely refers to specific UNet blocks or timesteps.
 # The pipeline code needs inspection to be sure. Let's assume it maps to timesteps for now.
 START_LAYER = 0             # Start visualization from this step/layer
-END_LAYER = NUM_INFERENCE_STEPS # End visualization at this step/layer (inclusive?)
+END_LAYER = 20 # End visualization at this step/layer (inclusive?)
 STEP_LAYER = 1              # Visualize every N steps/layers
 
 # Determine device dynamically or keep fixed

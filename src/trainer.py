@@ -8,12 +8,24 @@ from clearml import Logger
 import os
 from .model_setup import create_pipeline # For evaluation pipeline
 from PIL import Image
+try:
+    from DiffusionLens.pipeline_stable_diffusion import StableDiffusionPipeline as StableDiffusionGlassPipeline
+    DIFFUSION_LENS_AVAILABLE = True
+except ImportError:
+    StableDiffusionGlassPipeline = None # Or a dummy class
+    DIFFUSION_LENS_AVAILABLE = False
 
 class DreamBoothTrainer:
     def __init__(self, config, accelerator, logger):
         self.config = config
         self.accelerator = accelerator
         self.logger = logger
+        
+        # Check if DiffusionLens visualization is enabled
+        self.use_diffusion_lens = config.get('use_diffusion_lens', False) and DIFFUSION_LENS_AVAILABLE
+        if config.get('use_diffusion_lens', False) and not DIFFUSION_LENS_AVAILABLE:
+            print("Warning: DiffusionLens visualization is enabled in config but DiffusionLens is not available. Disabling feature.")
+        
 
     def train(self, unet, vae, text_encoder, tokenizer, noise_scheduler, train_dataloader, prior_data):
         """Main training loop."""
@@ -22,9 +34,10 @@ class DreamBoothTrainer:
 
         # Prepare optimizer
         optimizer_cfg = cfg['optimizer']
+        train_text_encoder = cfg['train_text_encoder']
         optimizer = torch.optim.AdamW(
             # Only train UNet and text_encoder parameters
-            list(unet.parameters()) + list(text_encoder.parameters()),
+            list(unet.parameters()) + list(text_encoder.parameters()) if train_text_encoder else list(unet.parameters()),
             lr=cfg['learning_rate'],
             betas=tuple(optimizer_cfg['betas']),
             weight_decay=optimizer_cfg['weight_decay'],
@@ -230,11 +243,14 @@ class DreamBoothTrainer:
 
                     # Periodic saving (main process only)
                     if self.accelerator.is_main_process:
-                        if cfg.get('save_model_steps') and global_step % cfg['save_model_steps'] == 0:
-                            self.save_checkpoint(unet, text_encoder, cfg, global_step)
+                        if cfg.get('save_model_steps') and (global_step % (num_update_steps_per_epoch *cfg['save_model_steps']) == 0):
+                            self.save_checkpoint(unet, text_encoder, cfg, epoch)
                         # Periodic image generation/logging
                         if cfg.get('log_image_epochs') and global_step % (num_update_steps_per_epoch * cfg['log_image_epochs']) == 0:
                             self.log_sample_images(unet, vae, text_encoder, tokenizer, noise_scheduler, cfg, epoch)
+                        # Periodic DiffusionLens visualization if enabled
+                        if self.use_diffusion_lens and cfg.get('diffusion_lens_epochs') and global_step % (num_update_steps_per_epoch * cfg['diffusion_lens_epochs']) == 0:
+                            self.log_diffusion_lens_images(unet, vae, text_encoder, tokenizer, noise_scheduler, cfg, epoch)
 
 
         # End of training
@@ -244,12 +260,15 @@ class DreamBoothTrainer:
             self.save_checkpoint(unet, text_encoder, cfg, global_step, final=True)
             # Final image generation
             self.log_sample_images(unet, vae, text_encoder, tokenizer, noise_scheduler, cfg, epoch, final=True)
+            # Final DiffusionLens visualization if enabled
+            if self.use_diffusion_lens:
+                self.log_diffusion_lens_images(unet, vae, text_encoder, tokenizer, noise_scheduler, cfg, epoch, final=True)
 
 
-    def save_checkpoint(self, unet, text_encoder, config, step_or_epoch, final=False):
+    def save_checkpoint(self, unet, text_encoder, config, epoch, final=False):
         """Saves the UNet and text_encoder state dicts."""
-        unet_out_path = os.path.join(config['output_dir'], config['task_name'], f"unet_{'final' if final else step_or_epoch}.pt")
-        text_encoder_out_path = os.path.join(config['output_dir'], config['task_name'], f"text_encoder_{'final' if final else step_or_epoch}.pt")
+        unet_out_path = os.path.join(config['output_dir'], config['task_name'], f"unet_{'final' if final else epoch+1}.pt")
+        text_encoder_out_path = os.path.join(config['output_dir'], config['task_name'], f"text_encoder_{'final' if final else epoch+1}.pt")
         os.makedirs(os.path.dirname(unet_out_path), exist_ok=True)
 
         # Unwrap models before saving state_dict
@@ -258,7 +277,7 @@ class DreamBoothTrainer:
 
         self.accelerator.save(unet_state_dict, unet_out_path)
         self.accelerator.save(text_encoder_state_dict, text_encoder_out_path)
-        print(f"Saved checkpoint at step/epoch {step_or_epoch} to {os.path.dirname(unet_out_path)}")
+        print(f"Saved checkpoint at step/epoch {epoch+1} to {os.path.dirname(unet_out_path)}")
 
         # # Optionally, upload to ClearML as artifacts
         # if self.logger:
@@ -314,6 +333,109 @@ class DreamBoothTrainer:
 
         print(f"Logged/Saved {len(images)} sample images.")
         del eval_pipeline # Free up memory
+        torch.cuda.empty_cache()
+        
+    @torch.no_grad()
+    def log_diffusion_lens_images(self, unet, vae, text_encoder, tokenizer, noise_scheduler, config, epoch, final=False):
+        """Generates and logs images with DiffusionLens to visualize the diffusion process."""
+        if not self.use_diffusion_lens:
+            return
+            
+        print(f"\nGenerating DiffusionLens visualizations for epoch {epoch+1}{' (Final)' if final else ''}...")
+        
+        # Get DiffusionLens parameters from config
+        lens_params = config.get('diffusion_lens_params', {})
+        start_layer = lens_params.get('start_layer', 0)
+        end_layer = lens_params.get('end_layer', 20)
+        step_layer = lens_params.get('step_layer', 1)
+        num_inference_steps = lens_params.get('num_inference_steps', 100)
+        guidance_scale = lens_params.get('guidance_scale', 7.5)
+        
+        # Important: Use unwrapped models for pipeline creation
+        unet_eval = self.accelerator.unwrap_model(unet)
+        text_encoder_eval = self.accelerator.unwrap_model(text_encoder)
+        
+        # Set up DiffusionLens pipeline
+        lens_pipeline = StableDiffusionGlassPipeline(
+            vae=vae,
+            text_encoder=text_encoder_eval,
+            tokenizer=tokenizer,
+            unet=unet_eval,
+            scheduler=noise_scheduler,
+            safety_checker=None,
+            feature_extractor=None,
+        )
+        lens_pipeline = lens_pipeline.to(self.accelerator.device)
+        lens_pipeline.set_progress_bar_config(disable=True)
+        
+        # Set up generator for reproducibility
+        generator = torch.Generator(device=self.accelerator.device).manual_seed(config.get('seed', 42) + epoch)
+        
+        # Use the core subject prompt for evaluation
+        prompt = config['lens_prompt']
+        negative_prompt = config.get('negative_prompt', "")
+        print(f"  Using prompt: '{prompt}'")
+        
+        # Create output directory
+        series_name = f"DiffusionLens_Epoch_{epoch+1}" if not final else "DiffusionLens_Final"
+        output_dir = os.path.join(config['output_dir'], config['task_name'], "diffusion_lens_images", series_name)
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # Run the DiffusionLens pipeline
+        weight_dtype = torch.float16 if config['mixed_precision'] == 'fp16' else torch.bfloat16 if config['mixed_precision'] == 'bf16' else torch.float32
+        with torch.autocast(self.accelerator.device.type, dtype=weight_dtype):
+            try:
+                layer_outputs = lens_pipeline(
+                    prompt=prompt,
+                    negative_prompt=negative_prompt,
+                    num_inference_steps=num_inference_steps,
+                    guidance_scale=guidance_scale,
+                    generator=generator,
+                    num_images_per_prompt=1,  # Just one image per layer for visualization
+                    start_layer=start_layer,
+                    end_layer=end_layer,
+                    step_layer=step_layer,
+                    output_type="pil"
+                )
+                
+                # Process and save the outputs
+                current_layer = start_layer
+                all_images = []
+                
+                for i, output in enumerate(layer_outputs):
+                    if not hasattr(output, 'images') or not output.images:
+                        print(f"Warning: No images found in output for layer index {i}")
+                        continue
+                        
+                    img = output.images[0]  # Get the first (and only) image
+                    all_images.append(img)
+                    
+                    # Save the image
+                    layer_filename = f"layer_{current_layer:03d}_step_{i:03d}.png"
+                    output_path = os.path.join(output_dir, layer_filename)
+                    img.save(output_path)
+                    
+                    current_layer += step_layer
+                
+                # Log to ClearML if available
+                if self.logger and all_images:
+                    # Create a grid of images for easier viewing
+                    # Log a few representative images
+                    for idx, img in enumerate(all_images[::max(1, len(all_images)//5)]):  # Log ~5 images
+                        self.logger.report_image(
+                            title="DiffusionLens Visualizations",
+                            series=series_name,
+                            iteration=epoch+1 if not final else config['num_train_epochs'],
+                            image=img
+                        )
+                
+                print(f"Saved {len(all_images)} DiffusionLens visualization images to {output_dir}")
+                
+            except Exception as e:
+                print(f"Error during DiffusionLens pipeline execution: {e}")
+        
+        # Clean up
+        del lens_pipeline
         torch.cuda.empty_cache()
         
         
