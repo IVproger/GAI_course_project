@@ -120,7 +120,28 @@ class DreamBoothTrainer:
                     model_pred_subject = self.accelerator.unwrap_model(unet)(noisy_latents, timesteps, encoder_hidden_states=encoder_hidden_states).sample
 
                     # Calculate subject loss
-                    loss_subject = F.mse_loss(model_pred_subject.float(), noise.float(), reduction="mean")
+                    # Original (incorrect): compares predicted noise to actual noise
+                    # loss_subject = F.mse_loss(model_pred_subject.float(), noise.float(), reduction="mean")
+
+                    # Corrected (DreamBooth paper): compares predicted x0 to actual x0 (latents)
+                    # 1. Get scheduler alphas
+                    alphas_cumprod_subject = noise_scheduler.alphas_cumprod.to(device=noisy_latents.device, dtype=model_pred_subject.dtype)
+                    sqrt_alpha_t_subject = alphas_cumprod_subject[timesteps] ** 0.5
+                    sqrt_one_minus_alpha_t_subject = (1.0 - alphas_cumprod_subject[timesteps]) ** 0.5
+
+                    # 2. Reshape alphas and sigmas for broadcasting
+                    sqrt_alpha_t_subject = sqrt_alpha_t_subject.flatten()
+                    while len(sqrt_alpha_t_subject.shape) < noisy_latents.ndim:
+                        sqrt_alpha_t_subject = sqrt_alpha_t_subject.unsqueeze(-1)
+                    sqrt_one_minus_alpha_t_subject = sqrt_one_minus_alpha_t_subject.flatten()
+                    while len(sqrt_one_minus_alpha_t_subject.shape) < noisy_latents.ndim:
+                        sqrt_one_minus_alpha_t_subject = sqrt_one_minus_alpha_t_subject.unsqueeze(-1)
+
+                    # 3. Denoise the prediction (get predicted x0)
+                    pred_x0_subject = (noisy_latents - sqrt_one_minus_alpha_t_subject * model_pred_subject) / sqrt_alpha_t_subject
+
+                    # 4. Calculate MSE loss against the original subject latents
+                    loss_subject = F.mse_loss(pred_x0_subject.float(), latents.float(), reduction="mean")
 
 
                     # --- Prior Preservation Loss ---
@@ -150,7 +171,30 @@ class DreamBoothTrainer:
 
 
                        # Calculate prior loss
-                       loss_prior = F.mse_loss(model_pred_prior.float(), noise_prior.float(), reduction="mean")
+                       # Original (incorrect): compares predicted noise to actual noise
+                       # loss_prior = F.mse_loss(model_pred_prior.float(), noise_prior.float(), reduction="mean")
+
+                       # Corrected (DreamBooth paper): compares predicted x0 to actual x0 (prior_batch_latents)
+                       # We need to derive the predicted x0 from the model's noise prediction.
+                       # 1. Get scheduler alphas
+                       alphas_cumprod = noise_scheduler.alphas_cumprod.to(device=noisy_prior_latents.device, dtype=model_pred_prior.dtype)
+                       sqrt_alpha_t = alphas_cumprod[t_prior] ** 0.5
+                       sqrt_one_minus_alpha_t = (1.0 - alphas_cumprod[t_prior]) ** 0.5
+
+                       # 2. Reshape alphas and sigmas for broadcasting
+                       sqrt_alpha_t = sqrt_alpha_t.flatten()
+                       while len(sqrt_alpha_t.shape) < noisy_prior_latents.ndim:
+                            sqrt_alpha_t = sqrt_alpha_t.unsqueeze(-1)
+                       sqrt_one_minus_alpha_t = sqrt_one_minus_alpha_t.flatten()
+                       while len(sqrt_one_minus_alpha_t.shape) < noisy_prior_latents.ndim:
+                            sqrt_one_minus_alpha_t = sqrt_one_minus_alpha_t.unsqueeze(-1)
+
+                       # 3. Denoise the prediction (get predicted x0)
+                       pred_x0_prior = (noisy_prior_latents - sqrt_one_minus_alpha_t * model_pred_prior) / sqrt_alpha_t
+
+                       # 4. Calculate MSE loss against the original prior latents
+                       # Cast both to float() like the subject loss calculation for numerical stability
+                       loss_prior = F.mse_loss(pred_x0_prior.float(), prior_batch_latents.float(), reduction="mean")
 
 
                     # --- Total Loss ---

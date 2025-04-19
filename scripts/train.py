@@ -12,6 +12,10 @@ from src.utils import set_seed # Use Accelerate's set_seed primarily
 from src.data_handling import PriorClassDataset, collate_fn, load_prior_data, get_train_transforms
 from src.model_setup import load_tokenizer, load_text_encoder, load_vae, load_unet, load_scheduler
 from src.trainer import DreamBoothTrainer
+# import warnings # Add this import
+
+# # Add this line to turn SyntaxWarnings into errors for better debugging
+# warnings.simplefilter('error', SyntaxWarning)
 
 
 def parse_args():

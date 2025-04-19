@@ -14,7 +14,7 @@ output_dir: "inference_outputs/dug_toy_dreambooth/inference_results"
 output_path: "inference_outputs/dug_toy_dreambooth/inference_results/generated.png"
 
 # Generation Parameters
-prompt: "a photo of brux duck toy in near ocean with waterfall"
+prompt: "brux duck toy on top of mount fuji"
 num_steps: 100
 guidance_scale: 7.5
 seed: 42

@@ -21,9 +21,6 @@ echo "Config Path: ${CONFIG_PATH}"
 echo "Timestamp: ${TIMESTAMP}"
 echo "=== Starting Generation ==="
 
-# Pre-create output directory (safer approach)
-mkdir -p "inference_outputs/dog_dreambooth/inference_results"
-
 # Run inference with YAML config
 python scripts/inference.py --config "${CONFIG_PATH}"
 

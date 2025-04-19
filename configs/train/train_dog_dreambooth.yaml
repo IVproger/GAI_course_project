@@ -20,7 +20,7 @@ subject_image_dir: "data/paper_dataset/dog"
 prior_data_dir: "data/prior_preservation/dog" # Directory containing pre-generated priors
 
 # Prior Preservation Settings
-use_prior_preservation: true
+use_prior_preservation: false
 generate_prior_images: false # Set to true only when running generate_priors.py
 num_prior_images: 1000        # Number of images to generate/use
 prior_loss_weight: 0.8
@@ -29,16 +29,17 @@ prior_num_inference_steps: 50     # Inference steps for prior generation
 prior_guidance_scale: 7.5       # Guidance scale for prior generation
 
 # Training Settings
-num_train_epochs: 500
+# best 250
+num_train_epochs: 250
 learning_rate: 2.0e-6
 lr_scheduler_type: "constant" # e.g., constant, linear, cosine
-lr_warmup_steps: 50
+lr_warmup_steps: 0
 optimizer:
   type: "AdamW"
   betas: [0.9, 0.999]
   weight_decay: 0.03
   eps: 2.0e-8
-train_batch_size: 5
+train_batch_size: 4
 prior_batch_size_train: 5 # Batch size for prior latents during training
 use_dreambooth_prompts: true # Whether to use standard DB prompt format
 ddpm_num_train_timesteps: 1000

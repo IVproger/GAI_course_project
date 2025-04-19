@@ -6,15 +6,17 @@ model_dir: "models"
 task_name: "dog_dreambooth"
 
 # Model Paths
-unet_path: "models/dog_dreambooth/unet_final.pt"
-text_encoder_path: "models/dog_dreambooth/text_encoder_final.pt"
+unet_path: "outputs/dreambooth_dog/unet_final.pt"
+text_encoder_path: "outputs/dreambooth_dog/text_encoder_final.pt"
 
 # Output Configuration
 output_dir: "inference_outputs/dog_dreambooth/inference_results"
 output_path: "inference_outputs/dog_dreambooth/inference_results/generated.png"
 
 # Generation Parameters
-prompt: "a photo of xon dog with sunglasses"
+prompt: "xon dog in front of eiffel tower"
+# on top of mount fuji
+# in front of eiffel tower
 num_steps: 100
 guidance_scale: 7.5
-seed: 42
+seed: 41
