@@ -1,167 +1,113 @@
-# DreamBooth Stylized Image Generation Service
+# **Diffusion Lens: Interpreting Text Encoders in Text-to-Image pipelines**
 
-![Logo](./images/logo.png)
+**Authors: Ivan Golov, Roman Makeev**
 
-## Overview
+*To see the implementation, visit our [github project](https://github.com/IVproger/GAI_course_project/tree/xai).*
 
-This project implements a service for generating stylized images using the DreamBooth approach. By fine-tuning a pre-trained text-to-image diffusion model on a small set of subject images (typically 3–5), the system binds a unique identifier to the subject. The service then leverages FastAPI for a robust backend and Gradio to provide an interactive user interface for generating novel, stylized images based on user-supplied references.
+---
 
-**Key Features:**
-- **Personalized Generation:** Fine-tunes a diffusion model using a few reference images to capture subject identity.
-- **Interactive UI:** Uses Gradio to let users upload images and specify text prompts for stylization.
-- **State-of-the-Art Methodology:** Inspired by the DreamBooth approach, which incorporates a class-specific prior preservation loss to maintain subject fidelity while generating diverse outputs.
-- **Multi-Animal Support:** Currently supports fine-tuning and generation for multiple animal types (dogs and ducks).
-- **Flexible Prediction Pipeline:** Robust inference system with configurable parameters and automatic GPU selection.
+## **Introduction**
 
-## Methodology
+In this work, we introduce an interpretable, end-to-end framework that enhances **Stable Diffusion v1.5 model** fine‑tuned via the [DreamBooth method](https://dreambooth.github.io) [1] to generate high‑fidelity, subject‑driven images from as few reference examples. 
 
-### DreamBooth Approach
-The core idea behind DreamBooth is to "implant" a subject into a text-to-image diffusion model using a few images. Key highlights include:
-- **Unique Identifier Binding:** A rare token (or unique identifier) is attached to the subject, enabling the model to generate the subject in a variety of contexts.
-- **Fine-Tuning:** The model is fine-tuned with both subject images and corresponding prompts (e.g., "a [V] dog"), leveraging a class-specific prior preservation loss to prevent overfitting and language drift.
-- **Applications:** This method allows for subject recontextualization, text-guided view synthesis, and artistic rendering—paving the way for creative applications like stylized image generation.
+While DreamBooth effectively personalizes generation by associating a unique rare token with the target concept, the internal process through which textual prompts are transformed into visual representations remains opaque. To bridge this gap, we integrate [Diffusion Lens](https://tokeron.github.io/DiffusionLensWeb/) [2], a visualization technique that decodes the text encoder’s intermediate hidden states into images, producing a layer‑by‑layer sequence that illuminates how semantic concepts emerge and refine over the course of encoding.
 
-For more details, refer to the paper:  
-**DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation** by Nataniel Ruiz et al. ([Project Page](https://dreambooth.github.io/)).
+**By uniting DreamBooth’s subject‑specific fine‑tuning with Diffusion Lens’s interpretability during both training and inference, our framework not only delivers compelling, stylized outputs but also offers transparent, quantitative insights into the hierarchical construction of visual content from natural language descriptions.**
 
-### Technical Implementation
-- **Backend:** Built using FastAPI to serve REST endpoints for image generation.
-- **User Interface:** Gradio is integrated for interactive testing—users can upload five reference images and provide text prompts to generate stylized images.
-- **Modular Code Structure:** The project is divided into modules and functions to enhance readability and maintainability. 
-- **Dependency Management:** We use Poetry along with a `requirements.txt` file for managing dependencies and ensuring reproducibility.
+## **Background**
 
-## Project Structure
+### **Section 1: DreamBooth Fine-Tuning**
+
+DreamBooth [1] fine-tunes a pre-trained diffusion model **with a small set (3–5) of images of a subject by binding a unique, rare-token identifier to the subject**. The rare token, chosen from the text encoder’s vocabulary, acts as a minimal prior and is used to encode target image features and styles. The main training objective is given by:
+
+![Loss functions](/static/dreambooth_math.png)
+
+An additional prior preservation loss ensures that the model retains its generalization over the subject’s class even after fine-tuning.  
+
+![DreamBooth framework](/static/dreambooth.png)
+
+Figure 1: Illustration of the DreamBooth approach: Fine-tuning the diffusion model using rare tokens to
+encode target subject details and style
+
+![DreamBooth example](/static/dreambooth_examples.png)
+
+Figure 2: Expected output from DreamBooth fine-tuning: Images generated that exhibit the target subject
+details and stylistic features as encoded by the rare tokens.
+
+### **Section 2: Diffusion Lens Interpretability**
+
+Diffusion Lens [2] is employed to analyze **the internal representations of the text encoder after the fine-tuning process**. Rather than solely relying on the final output, we generate images from intermediate hidden states.
+For a given layer l (with l < L for a total of L layers), the generated image is:
+
+![Diffusion Lens math](/static/DiffLen_math.png)
+
+This method provides:
+* **Layer-by-Layer Understanding:** Early layers capture basic, unstructured representations (a “bag
+of concepts”), while later layers progressively refine and organize these ideas.
+* **Complexity Analysis:** Simple prompts (e.g., “a cat”) yield clear representations in early layers,
+whereas complex prompts (e.g., “a red car next to a blue bike”) require deeper layers to form accurate
+relational structures.
+* **Concept Frequency Insights:** Common concepts appear early; uncommon or detailed concepts
+emerge only in higher layers.
+* **Impact Analysis:** By comparing the intermediate representations before and after applying adapter
+techniques (e.g., LoRA), we can study how such modifications alter the text encoder’s understanding
+and the final image generation.
+* **No Extra Training Required:** The analysis leverages the pre-trained model without modifying its
+architecture
+
+![Diffusion Lens Diagram](/static/difflens.png)
+
+## **Methodology**
+
+We investigate the fine‑tuning and inference phases to elucidate how Stable Diffusion v1.5 internalizes and expresses subject‑specific concepts:
+
+1. **Intermediate Diffusion Outputs:**
+We set up the U‑Net denoising pipeline to capture latent representations at selected epochs. By visualizing these snapshots, we observe how the model gradually injecting the target class’s distinctive features (shape, texture, lighting) learned via DreamBooth.
+
+2. **Text Encoder Layer Visualization:**
+During prompt encoding, we capture the hidden states {{<katex>}}h_\ell{{</katex>}} at multiple encoder layers. Each extracted representation is decoded through the frozen diffusion decoder, yielding images that reveal the semantic content captured at that stage. This layer‑wise decoding clarifies when and to what extent the rare token’s semantics integrate with the overall prompt, illuminating the encoder’s hierarchical concept construction.
+
+### **Implementation Highlights**
+
+Our codebase is organized as follows:
 
 ```
 GAI_course_project/
-├── configs/              # Configuration files (e.g., YAML, JSON settings)
-├── data/                 # Datasets and data files (raw, processed, etc.)
-├── deploy/               # Deployment scripts and container configurations
-├── images/               # Visual assets such as logos and diagrams
-├── notebooks/            # Jupyter notebooks for experiments and analysis
-├── paper/                # Research paper files and related documentation
-├── scripts/              # Utility and automation scripts
-├── src/                  # Source code for the project (modules, functions, etc.)
-├── LICENSE               # License file
-├── pyproject.toml        # Project configuration file for Poetry
-├── poetry.lock           # Lock file for dependency management with Poetry
-├── README.md             # Project overview and setup instructions
-└── requirements.txt      # Additional dependency list
+├── analyze_dreambooth_lens.py    # Script for analyzing the codebase provide by DiffusionLens framework.
+├── configs/                      # Directory containing configuration files for different experiments.
+├── data/                         # Directory containing the data used for training.
+├── DiffusionLens/                # Directory related to the DiffusionLens module.
+├── images/                       # Directory containing images for reporting.
+├── inference_outputs/            # Directory to store the outputs of the inference process.
+├── lens_output/                  # Directory to store the output specifically related to Diffusion Lens experiments.
+├── LICENSE                       # License file for the project.
+├── notebooks/                    # Directory containing Jupyter notebooks for experimentation and analysis.
+├── outputs/                      # Directory to store outputs of traning and inference pipelines - images, stats, models weights.
+├── papers/                        # Directory related to a research papers and supplementary materials.
+├── poetry.lock                   # Lock file for dependency management using Poetry.
+├── pyproject.toml                # Project configuration file for Poetry.
+├── README.md                     # Project description and instructions.
+├── requirements.txt              # List of project dependencies.
+└── scripts/                      # Directory containing utility scripts.
+└── src/                          # Directory containing the main source code of the project.
 ```
 
-## Setup and Installation
-
-### Prerequisites
-- Python >=3.11
-- [Poetry](https://python-poetry.org/) for dependency management
-- Additional libraries as listed in `requirements.txt`
-
-### Installation Steps
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/IVproger/GAI_course_project.git
-   cd GAI_course_project
-   ```
-2. **Install Dependencies:**
-   ```bash
-   # Option 1: Using env activate (recommended)
-   poetry install
-   poetry env use python3.11
-   poetry env activate
-
-   # Option 2: Using shell plugin
-   poetry plugin add poetry-shell-plugin
-   poetry install
-   poetry shell
-   ```
-   **OR**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate   # For Windows: venv\Scripts\activate
-   pip install --upgrade pip
-   pip install -r requirements.txt
-   ```
-   
-## Usage
-
-1. **Model Training:**
-   - The system supports training models for different animal types (currently dogs and ducks)
-   - Training configurations are stored in `configs/training/` directory
-   - Each animal type has its specific configuration file
-
-2. **Image Generation:**
-   ```python
-   from src.predict import predict
-   from src.enums import AnimalType
-
-   # Generate an image of a dog
-   output_path = predict("a dog in space suit on the moon", AnimalType.DOG)
-
-   # Generate an image of a duck
-   output_path = predict("a duck swimming in a pond", AnimalType.DUCK)
-   ```
-
-3. **Configuration:**
-   - Inference configurations are stored in `configs/inference/` directory
-   - Each animal type has its specific configuration file (e.g., `dog.yaml`, `duck.yaml`)
-   - Configurations include model paths, generation parameters, and output settings
-
-4. **Output:**
-   - Generated images are saved in the configured output directory
-   - Filenames include the animal type and timestamp for easy tracking
-
-## Contributors
-
-- **Ivan Golov** (i.golov@innopolis.university)
-- **Roman Makeev**
-- **Maxim Martyshov**
-
-## Proof-of-Concept (POC)
-
-This stage represents the initial proof-of-concept where the DreamBooth fine-tuning process was applied. In this phase, the model was fine-tuned on the provided reference images (
-Corgi dog from DreamBooth ref dataset) to capture the unique subject characteristics, resulting in early experimental outputs.
-
-### Source image:
-   ![Source image](./images/00.jpg)
-
-### Tuning Output Samples
-
-The images below are sample outputs obtained after tuning:
-
-### Target_generated_image
- **Prompt:**  
- "a xon dog"  
- ![Tuning Output 1](./images/target_generated_image_0.png)
-
-### Styled_generated_image №1
-**Prompt:**  
-"a xon dog in beautifyl landscape with river, forest and mountines"  
-![Tuning Output 2](./images/styled_generated_image_0.png)
-
-### Styled_generated_image №2
-**Prompt:**  
-"a xon dog in astronaut costume against moon and stars. The xon dog stands proudly on the rocky lunar surface, with its paw slightly raised as if exploring"  
-![Tuning Output 3](./images/styled_generated_image_1.png)
-
-### Styled_generated_image №3
-**Prompt:**  
-"'a xon dog in cool sunglasses sitting in the sport car, smillings and have good time"  
-![Tuning Output 3](./images/styled_generated_image_2.png)
 
 
-## References
 
-- **DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation**  
-  Nataniel Ruiz, Yuanzhen Li, Varun Jampani, et al.  
-  [Project Page](https://dreambooth.github.io/)
-- Additional literature on text-to-image diffusion models and generative adversarial networks.
+## **Experiments and Analysis**
 
-## License
 
-This project is licensed under the [MIT License](./LICENSE).
+## **Conclusion**
 
-## Acknowledgements
+By combining DreamBooth fine-tuning with Diffusion Lens interpretability, we achieve not only **high-fidelity, subject-driven image synthesis** but also **transparent insights** into the model’s inner semantic processing. Our visualizations confirm that concepts emerge and sharpen progressively across text encoder and U-net layers.  
 
-We thank the course instructors, collaborators, and the open-source community for providing the tools and libraries that made this project possible.
 
----
+## **References**
+
+[1] N. Ruiz, Y. Li, V. Jampani, Y. Pritch, M. Rubinstein, and K. Aberman, Dreambooth: Fine tuning text-
+to-image diffusion models for subject-driven generation, 2023. arXiv: 2208.12242 [cs.CV]. [Online]. Available: [https://arxiv.org/abs/2208.12242](https://arxiv.org/abs/2208.12242).
+
+[2] M. Toker, H. Orgad, M. Ventura, D. Arad, and Y. Belinkov, “Diffusion lens: Interpreting text encoders in text-to-image pipelines,” Association for Computational Linguistics, 2024, pp. 9713–9728. doi: 10.18653/v1/2024.acl-long.524. [Online]. Available: [http://dx.doi.org/10.18653/v1/2024.acl-long.524](https://arxiv.org/abs/2208.12242).
+
+
