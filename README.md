@@ -1,7 +1,6 @@
 # **Diffusion Lens: Interpreting Text Encoders in Text-to-Image pipelines**
 
 **Authors: Ivan Golov, Roman Makeev**
----
 
 ## **Introduction**
 
