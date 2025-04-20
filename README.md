@@ -1,9 +1,6 @@
 # **Diffusion Lens: Interpreting Text Encoders in Text-to-Image pipelines**
 
 **Authors: Ivan Golov, Roman Makeev**
-
-*To see the implementation, visit our [github project](https://github.com/IVproger/GAI_course_project/tree/xai).*
-
 ---
 
 ## **Introduction**
