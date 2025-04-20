@@ -1,18 +1,6 @@
----
-weight: 1
-bookFlatSection: true
-title: "Diffusion Lens: Interpreting Text Encoders in Text-to-Image pipelines"
----
-
 # **Diffusion Lens: Interpreting Text Encoders in Text-to-Image pipelines**
 
 **Authors: Ivan Golov, Roman Makeev**
-
-*To see the implementation, visit our [github project](https://github.com/IVproger/GAI_course_project/tree/xai).*
-
-<!-- Example of image loading -->
-<!-- ![Diffusion Lens Diagram](/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth.png) -->
-
 ---
 
 ## **Introduction**
