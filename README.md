@@ -385,10 +385,6 @@ To investigate how DreamBooth fine-tuning alters the semantic understanding of s
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook/layer_000_step_000.png" width="300"/>
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook_trained/layer_000_step_000.png" width="300"/>
   </div>
-  <div class="layer-labels">
-    <strong>Layer 0 Raw</strong>
-    <strong>Layer 0 Tuned</strong>
-  </div>
 </div>
 
 <div class="layer-block">
@@ -396,10 +392,6 @@ To investigate how DreamBooth fine-tuning alters the semantic understanding of s
   <div class="layer-images">
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook/layer_001_step_001.png" width="300"/>
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook_trained/layer_001_step_001.png" width="300"/>
-  </div>
-  <div class="layer-labels">
-    <strong>Layer 1 Raw</strong>
-    <strong>Layer 1 Tuned</strong>
   </div>
 </div>
 
@@ -409,10 +401,6 @@ To investigate how DreamBooth fine-tuning alters the semantic understanding of s
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook/layer_002_step_002.png" width="300"/>
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook_trained/layer_002_step_002.png" width="300"/>
   </div>
-  <div class="layer-labels">
-    <strong>Layer 2 Raw</strong>
-    <strong>Layer 2 Tuned</strong>
-  </div>
 </div>
 
 <div class="layer-block">
@@ -420,10 +408,6 @@ To investigate how DreamBooth fine-tuning alters the semantic understanding of s
   <div class="layer-images">
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook/layer_003_step_003.png" width="300"/>
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook_trained/layer_003_step_003.png" width="300"/>
-  </div>
-  <div class="layer-labels">
-    <strong>Layer 3 Raw</strong>
-    <strong>Layer 3 Tuned</strong>
   </div>
 </div>
 
@@ -433,10 +417,6 @@ To investigate how DreamBooth fine-tuning alters the semantic understanding of s
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook/layer_004_step_004.png" width="300"/>
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook_trained/layer_004_step_004.png" width="300"/>
   </div>
-  <div class="layer-labels">
-    <strong>Layer 4 Raw</strong>
-    <strong>Layer 4 Tuned</strong>
-  </div>
 </div>
 
 <div class="layer-block">
@@ -444,10 +424,6 @@ To investigate how DreamBooth fine-tuning alters the semantic understanding of s
   <div class="layer-images">
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook/layer_005_step_005.png" width="300"/>
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook_trained/layer_005_step_005.png" width="300"/>
-  </div>
-  <div class="layer-labels">
-    <strong>Layer 5 Raw</strong>
-    <strong>Layer 5 Tuned</strong>
   </div>
 </div>
 
@@ -457,10 +433,6 @@ To investigate how DreamBooth fine-tuning alters the semantic understanding of s
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook/layer_006_step_006.png" width="300"/>
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook_trained/layer_006_step_006.png" width="300"/>
   </div>
-  <div class="layer-labels">
-    <strong>Layer 6 Raw</strong>
-    <strong>Layer 6 Tuned</strong>
-  </div>
 </div>
 
 <div class="layer-block">
@@ -468,10 +440,6 @@ To investigate how DreamBooth fine-tuning alters the semantic understanding of s
   <div class="layer-images">
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook/layer_007_step_007.png" width="300"/>
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook_trained/layer_007_step_007.png" width="300"/>
-  </div>
-  <div class="layer-labels">
-    <strong>Layer 7 Raw</strong>
-    <strong>Layer 7 Tuned</strong>
   </div>
 </div>
 
@@ -481,10 +449,6 @@ To investigate how DreamBooth fine-tuning alters the semantic understanding of s
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook/layer_008_step_008.png" width="300"/>
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook_trained/layer_008_step_008.png" width="300"/>
   </div>
-  <div class="layer-labels">
-    <strong>Layer 8 Raw</strong>
-    <strong>Layer 8 Tuned</strong>
-  </div>
 </div>
 
 <div class="layer-block">
@@ -492,10 +456,6 @@ To investigate how DreamBooth fine-tuning alters the semantic understanding of s
   <div class="layer-images">
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook/layer_009_step_009.png" width="300"/>
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook_trained/layer_009_step_009.png" width="300"/>
-  </div>
-  <div class="layer-labels">
-    <strong>Layer 9 Raw</strong>
-    <strong>Layer 9 Tuned</strong>
   </div>
 </div>
 
@@ -505,10 +465,6 @@ To investigate how DreamBooth fine-tuning alters the semantic understanding of s
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook/layer_010_step_010.png" width="300"/>
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook_trained/layer_010_step_010.png" width="300"/>
   </div>
-  <div class="layer-labels">
-    <strong>Layer 10 Raw</strong>
-    <strong>Layer 10 Tuned</strong>
-  </div>
 </div>
 
 <div class="layer-block">
@@ -517,10 +473,6 @@ To investigate how DreamBooth fine-tuning alters the semantic understanding of s
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook/layer_011_step_011.png" width="300"/>
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook_trained/layer_011_step_011.png" width="300"/>
   </div>
-  <div class="layer-labels">
-    <strong>Layer 11 Raw</strong>
-    <strong>Layer 11 Tuned</strong>
-  </div>
 </div>
 
 <div class="layer-block">
@@ -528,10 +480,6 @@ To investigate how DreamBooth fine-tuning alters the semantic understanding of s
   <div class="layer-images">
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook/layer_012_step_012.png" width="300"/>
     <img src="/Diffusion%20Lens:%20Interpreting%20Text%20Encoders%20in%20Text-to-Image%20pipelines%20tuned%20using%20DreamBooth/dreambooth_lens_notebook_trained/layer_012_step_012.png" width="300"/>
-  </div>
-  <div class="layer-labels">
-    <strong>Layer 12 Raw</strong>
-    <strong>Layer 12 Tuned</strong>
   </div>
 </div>
 
